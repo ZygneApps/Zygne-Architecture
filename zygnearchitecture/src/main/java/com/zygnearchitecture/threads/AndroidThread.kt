@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,41 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.zygnearchitecture.threads
 
-package com.zygnearchitecture.threads;
-
-import android.os.Handler;
-import android.os.Looper;
-
-import com.zygnearchitecture.domain.executor.base.MainThread;
-
+import android.os.Handler
+import android.os.Looper
+import com.zygnearchitecture.domain.executor.base.MainThread
 
 /**
  * Implementation of the MainThread interface.
  *
  * This class is used to send tasks from a background thread to the main thread
  */
-public class AndroidThread implements MainThread {
-
-    private static AndroidThread androidThread;
-
-    private final Handler handler;
-
-    private AndroidThread() {
-        handler = new Handler(Looper.getMainLooper());
-    }
+object AndroidThread : MainThread {
+    private val handler: Handler = Handler(Looper.getMainLooper())
 
     // post the runnable to the main thread
-    @Override
-    public void post(Runnable runnable) {
-        handler.post(runnable);
+    override fun post(runnable: Runnable?) {
+        handler.post(runnable)
     }
 
-    public static MainThread getInstance() {
-        if (androidThread == null) {
-            androidThread = new AndroidThread();
-        }
-
-        return androidThread;
-    }
 }

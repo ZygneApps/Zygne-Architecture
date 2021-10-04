@@ -1,11 +1,9 @@
-package com.zygne.zygnearch.domain.interactors.virtual;
+package com.zygne.zygnearch.domain.interactors.virtual
 
+import com.zygnearchitecture.domain.interactors.base.Interactor
 
-import com.zygnearchitecture.domain.interactors.base.Interactor;
-
-public interface MainInteractor extends Interactor {
-
+interface MainInteractor : Interactor {
     interface Callback {
-        void onMainCompleted();
+        fun onMainCompleted()
     }
 }

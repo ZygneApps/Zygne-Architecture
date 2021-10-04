@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,64 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.zygnearchitecture.domain.interactors.base
 
-package com.zygnearchitecture.domain.interactors.base;
-
-
-import com.zygnearchitecture.domain.executor.base.Executor;
-import com.zygnearchitecture.domain.executor.base.MainThread;
+import com.zygnearchitecture.domain.executor.base.Executor
+import com.zygnearchitecture.domain.executor.base.MainThread
 
 /**
  * Base class for all interactors.
  *
  * All interactors should extend this class, and implement their main logic
  * in the method run().
+ *
+ * @property executor : implementation of Executor to run interactors o background thread
+ * @property mainThread : implementation of MainThread to allow interactors to post to main thread
  */
-public abstract class AbstractInteractor implements Interactor {
-
-    private static final String TAG = AbstractInteractor.class.getSimpleName();
-
-    // executor for executing the main logic on a background thread.
-    private final Executor executor;
+abstract class AbstractInteractor(// executor for executing the main logic on a background thread.
+        private val executor: Executor, // main thread for posting results from worker thread to the main thread.
+        protected val mainThread: MainThread) : Interactor {
 
     // flag indicating if this interactor is active, is doing work.
-    private boolean active;
+    var isActive = false
+        private set
 
     // flag to indicate if the this interactor has finished.
-    private boolean finished;
-
-    // main thread for posting results from worker thread to the main thread.
-    protected final MainThread mainThread;
-
-    public AbstractInteractor(Executor executor, MainThread mainThread){
-        this.executor = executor;
-        this.mainThread = mainThread;
-
-        active = false;
-        finished = false;
-    }
+    var isFinshed = false
+        private set
 
     // this method will execute the main logic for the interactor.
-    public abstract void run();
+    abstract fun run()
 
-    @Override
-    public void execute() {
-
-        active = true;
-        executor.execute(this);
+    override fun execute() {
+        isActive = true
+        executor.execute(this)
     }
 
-    public void onFinished() {
-        active = false;
-        finished = true;
+    fun onFinished() {
+        isActive = false
+        isFinshed = true
     }
-
-    public boolean isActive(){
-        return active;
-    }
-
-    public boolean isFinshed(){
-        return finished;
-    }
-
 }
