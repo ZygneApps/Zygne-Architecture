@@ -1,5 +1,5 @@
 # Zygne-Architecture
-How to add:
+### How to add:
 
 Step 1. Add JitPack repository to your build file
 ```
@@ -14,7 +14,7 @@ allprojects {
   Step 2. Add the dependency
   ```
   dependencies {
-	        implementation 'com.github.ZygneApps:Zygne-Architecture:1.0.1'
+	        implementation 'com.github.ZygneApps:Zygne-Architecture:[version_code]'
 	}
   ```
 
@@ -23,12 +23,9 @@ allprojects {
 Step 1
 Create a new intereactor ineterface which extends ``Interactor``
 ```
-public interface MainInteractor extends Interactor {
-
-    // Callback interface for passing result to listener
+interface MainInteractor : Interactor {
     interface Callback {
-        // this intereactor has completed
-        void onMainCompleted();
+        fun onMainCompleted()
     }
 }
 ```
@@ -39,34 +36,7 @@ Override the method ``public void run()`` for the  intreactor, this method will 
 
 When computation is done and you want to pass the information to the MainThread then simply call
 ```
-mainThread.post(()-> callback.onMainCompleted());
-```
-
-Sample class
-```
-public class MainInteractorImpl extends AbstractInteractor implements
-        MainInteractor {
-
-    // instance of callback for passing updates
-    private Callback callback;
-
-    public MainInteractorImpl(Executor executor, MainThread mainThread, Callback callback) {
-        super(executor, mainThread);
-        this.callback = callback;
-    }
-
-    @Override
-    public void run() {
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        mainThread.post(()-> callback.onMainCompleted());
-    }
-}
+mainThread.post { callback.onMainCompleted() }
 ```
 ---
 ### Presentationn
@@ -75,16 +45,14 @@ public class MainInteractorImpl extends AbstractInteractor implements
 Create new presenter intereface which extends ``BasePresenter``
 
 ```
-public interface MainPresenter extends BasePresenter {
+interface MainPresenter : BasePresenter {
 
     // View for this presenter
-    // Base view contains common preseentation methods such as show and hide progress
-    interface View extends BaseView {
-        void onMainCompleted();
+    interface View : BaseView {
+        fun onMainCompleted()
     }
-    
-    // start the presenter
-    void start();
+
+    fun start()
 }
 ```
 
@@ -92,58 +60,33 @@ public interface MainPresenter extends BasePresenter {
 
 
 ```
-public class MainPresenterImpl extends AbstractPresenter implements
+class MainPresenterImpl(
+        executor: Executor?, 
+        mainThread: MainThread?,
+        private var view: MainPresenter.View?) 
+    : AbstractPresenter(executor!!, mainThread!!),
+        MainPresenter {
+
+    //...
+}
+```
+Make the implementation of the presenter implement the callback of the interactor
+
+```
+class MainPresenterImpl(
+        executor: Executor?,
+        mainThread: MainThread?,
+        private var view: MainPresenter.View?)
+    : AbstractPresenter(executor!!, mainThread!!),
         MainPresenter,
         MainInteractor.Callback {
 
-    private View view;
 
-    public MainPresenterImpl(Executor executor, MainThread mainThread, View view) {
-        super(executor, mainThread);
-
-        this.view = view;
+    override fun onMainCompleted() {
+        // interactor has completed
+        // update the view
     }
 
-    @Override
-    public void onMainCompleted() {
-        if(view != null){
-            view.hideProgress();
-            view.onMainCompleted();
-        }
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void destroy() {
-        view = null;
-    }
-
-    @Override
-    public void start() {
-        if(view != null){
-            view.showProgress();
-
-            MainInteractor interactor =
-                    new MainInteractorImpl(executor, mainThread, this);
-
-            interactor.execute();
-        }
-    }
-}
 ```
 ---
 ### Putting it all together

@@ -7,7 +7,15 @@ import com.zygnearchitecture.domain.executor.base.Executor
 import com.zygnearchitecture.domain.executor.base.MainThread
 import com.zygnearchitecture.presentation.presenters.base.AbstractPresenter
 
-class MainPresenterImpl(executor: Executor?, mainThread: MainThread?, private var view: MainPresenter.View?) : AbstractPresenter(executor!!, mainThread!!), MainPresenter, MainInteractor.Callback {
+class MainPresenterImpl(
+        executor: Executor?,
+        mainThread: MainThread?,
+        private var view: MainPresenter.View?)
+    : AbstractPresenter(executor!!, mainThread!!),
+        MainPresenter,
+        MainInteractor.Callback {
+
+
     override fun onMainCompleted() {
         if (view != null) {
             view!!.hideProgress()

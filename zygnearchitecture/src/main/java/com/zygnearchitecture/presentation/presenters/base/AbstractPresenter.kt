@@ -30,6 +30,4 @@ import com.zygnearchitecture.domain.executor.base.MainThread
 abstract class AbstractPresenter(protected val executor: Executor,
                                  protected val mainThread: MainThread) {
 
-    var isActive = false
-        protected set
 }
