@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.zygnearchitecture.threads
 
-package com.zygnearchitecture.presentation.presenters.base;
+import android.os.Handler
+import android.os.Looper
+import com.zygnearchitecture.domain.executor.base.MainThread
 
 /**
- * Interface for Base Presenter
+ * Implementation of the MainThread interface.
  *
- * this interface contains lifecycle methods which should be implemented
- * by all presenters
+ * This class is used to send tasks from a background thread to the main thread
  */
-public interface BasePresenter {
+object AndroidThread : MainThread {
+    private val handler: Handler = Handler(Looper.getMainLooper())
 
-    void resume();
+    // post the runnable to the main thread
+    override fun post(runnable: Runnable?) {
+        handler.post(runnable)
+    }
 
-    void pause();
-
-    void stop();
-
-    void destroy();
 }
