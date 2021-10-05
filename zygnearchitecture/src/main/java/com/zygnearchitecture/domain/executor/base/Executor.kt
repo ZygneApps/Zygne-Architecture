@@ -24,5 +24,5 @@ import com.zygnearchitecture.domain.interactors.base.AbstractInteractor
  * execute() starts the interactor in a background thread.
  */
 interface Executor {
-    fun execute(interactor: AbstractInteractor?)
+    fun execute(interactor: AbstractInteractor)
 }

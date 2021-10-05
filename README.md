@@ -114,7 +114,7 @@ in the ``onCreate`` for your Activity initialize the presenter with the ``Thread
 
     }
 ```
-Call a presennter method from your Activity
+Call a presenter method from your Activity
 ```
 presenter.start();
 ```

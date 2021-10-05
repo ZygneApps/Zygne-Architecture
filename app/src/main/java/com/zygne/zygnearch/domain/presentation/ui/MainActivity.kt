@@ -7,6 +7,9 @@ import com.zygne.zygnearch.R
 import com.zygne.zygnearch.domain.presentation.presenters.concrete.MainPresenterImpl
 import com.zygne.zygnearch.domain.presentation.presenters.virtual.MainPresenter
 import com.zygnearchitecture.domain.executor.implementation.ThreadExecutor
+import com.zygnearchitecture.domain.log.factory.LoggerFactory
+import com.zygnearchitecture.domain.log.implementation.DebugLogger
+import com.zygnearchitecture.domain.log.implementation.EmptyLogger
 import com.zygnearchitecture.threads.AndroidThread
 
 class MainActivity : AppCompatActivity(), MainPresenter.View {
@@ -18,6 +21,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         setContentView(R.layout.activity_main)
         tvMain = findViewById(R.id.tv_main)
 
+        LoggerFactory.setDefaultLogger(DebugLogger())
         presenter = MainPresenterImpl(ThreadExecutor,
                 AndroidThread,
                 this)
