@@ -28,7 +28,7 @@ object AndroidThread : MainThread {
     private val handler: Handler = Handler(Looper.getMainLooper())
 
     // post the runnable to the main thread
-    override fun post(runnable: Runnable?) {
+    override fun post(runnable: Runnable) {
         handler.post(runnable)
     }
 

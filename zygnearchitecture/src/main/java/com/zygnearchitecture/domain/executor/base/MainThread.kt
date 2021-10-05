@@ -22,5 +22,5 @@ package com.zygnearchitecture.domain.executor.base
  * post(Runnable) posts a new runnable to be run on the main thread.
  */
 interface MainThread {
-    fun post(runnable: Runnable?)
+    fun post(runnable: Runnable)
 }

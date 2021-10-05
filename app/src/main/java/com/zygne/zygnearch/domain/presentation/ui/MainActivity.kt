@@ -1,15 +1,14 @@
 package com.zygne.zygnearch.domain.presentation.ui
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.zygne.zygnearch.R
 import com.zygne.zygnearch.domain.presentation.presenters.concrete.MainPresenterImpl
 import com.zygne.zygnearch.domain.presentation.presenters.virtual.MainPresenter
 import com.zygnearchitecture.domain.executor.implementation.ThreadExecutor
 import com.zygnearchitecture.domain.log.factory.LoggerFactory
 import com.zygnearchitecture.domain.log.implementation.DebugLogger
-import com.zygnearchitecture.domain.log.implementation.EmptyLogger
 import com.zygnearchitecture.threads.AndroidThread
 
 class MainActivity : AppCompatActivity(), MainPresenter.View {
