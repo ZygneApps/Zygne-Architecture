@@ -1,18 +1,3 @@
-/**
- * Copyright (C) 2017 Bardur Thomsen Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.zygnearchitecture.domain.executor.implementation
 
 import com.zygnearchitecture.domain.executor.base.Executor
@@ -54,6 +39,8 @@ object ThreadExecutor : Executor {
         threadPoolExecutor.submit {
             val startTime = System.currentTimeMillis()
 
+
+            LoggerFactory.getDefaultLogger().log(Severity.INFO, LogData(LogConfig.SUPER_TAG, "$TAG :: Execute ${interactor.javaClass.simpleName}"))
             // Execute the main logic for the interactor.
             interactor.run()
 
@@ -61,7 +48,7 @@ object ThreadExecutor : Executor {
             interactor.onFinished()
             val totalTime = System.currentTimeMillis() - startTime
 
-            LoggerFactory.getDefaultLogger().log(Severity.INFO, LogData(LogConfig.SUPER_TAG, "$TAG :: Time to execute ->  ${interactor.javaClass.simpleName} : $totalTime ms"))
+            LoggerFactory.getDefaultLogger().log(Severity.INFO, LogData(LogConfig.SUPER_TAG, "$TAG :: Time to execute ->  ${interactor.javaClass.simpleName} = $totalTime ms"))
         }
     }
 }

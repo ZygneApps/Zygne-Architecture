@@ -30,13 +30,25 @@ interface MainInteractor : Interactor {
 }
 ```
 Step 2
-Create an inplementation of the newely created interactor interface. Make this implementation extend ``AbstractInteractor``. ``AbstractInteractor`` requires an ``Executor`` and a ``MainThread`` for running on a background thread and passing data to the main thread.
+Create an implementation of the newly created interactor interface. Make this implementation extend ``AbstractInteractor``. ``AbstractInteractor`` requires an ``Executor`` and a ``MainThread`` for running on a background thread and passing data to the main thread.
 
 Override the method ``public void run()`` for the  intreactor, this method will be executed in a background thread.
 
 When computation is done and you want to pass the information to the MainThread then simply call
 ```
 mainThread.post { callback.onMainCompleted() }
+```
+
+```
+class MainInteractorImpl(
+    executor: Executor?, mainThread: MainThread?,
+    private val callback: MainInteractor.Callback
+) : AbstractInteractor(executor!!, mainThread!!), MainInteractor {
+    override fun run() {
+        // logic here
+        mainThread.post { callback.onMainCompleted() }
+    }
+}
 ```
 ---
 ### Presentationn
